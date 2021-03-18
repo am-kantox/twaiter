@@ -24,3 +24,5 @@ twaiter-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+mastodon.social.sh

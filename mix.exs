@@ -21,10 +21,8 @@ defmodule Twaiter.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:rs_twitter, "~> 0.1"},
-      #
-      {:oauther, "~> 1.1"},
-      {:extwitter, "~> 0.12"},
+      # {:hunter, "~> 0.4"},
+      {:hunter, github: "milmazz/hunter"},
       # dev, test
       {:credo, "~> 1.0", only: [:dev, :ci], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :ci], runtime: false},

@@ -3,5 +3,5 @@ defmodule Twaiter.ThirdParty do
   @callback connect(input :: map()) :: :ok | {:error, any()}
 
   @doc "Perform request to the third party"
-  @callback call(input :: String.t()) :: String.t()
+  @callback call(input :: map(), state :: map()) :: any()
 end
