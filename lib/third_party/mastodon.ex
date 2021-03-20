@@ -1,29 +1,9 @@
 defmodule Twaiter.Mastodon do
+  use Twaiter.ThirdParty
+end
+
+defmodule Twaiter.Mastodon.Impl do
   @behaviour Twaiter.ThirdParty
-
-  use GenServer
-
-  def start_link(opts \\ []) do
-    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
-  end
-
-  def post(input) do
-    GenServer.call(__MODULE__, {:post, input})
-  end
-
-  @impl GenServer
-  def init(state) do
-    {:ok, Map.new(state), {:continue, :connect}}
-  end
-
-  @impl GenServer
-  def handle_continue(:connect, state),
-    do: {:noreply, connect(state)}
-
-  @impl GenServer
-  def handle_call({:post, input}, _from, state) do
-    {:reply, call(input, state), state}
-  end
 
   @impl Twaiter.ThirdParty
   def connect(%{} = input) do
