@@ -25,4 +25,17 @@ defmodule Twaiter.Tests.Mastodon do
 
     assert Twaiter.Mastodon.post("Hello") == {:second, "Hello"}
   end
+
+  test "checks the state" do
+    Twaiter.Mocks.ThirdParty
+    |> expect(:connect, fn _ -> %{happy: true} end)
+
+    {:ok, pid} = Twaiter.Mastodon.start_link()
+
+    this = self()
+    assert {^this, %{happy: _}} = Twaiter.Mastodon.state()
+
+    assert_receive {:hey, ^pid}
+  end
+
 end

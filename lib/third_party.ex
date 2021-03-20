@@ -26,9 +26,19 @@ defmodule Twaiter.ThirdParty do
         GenServer.call(__MODULE__, {:post, input})
       end
 
+      def state() do
+        GenServer.call(__MODULE__, :state)
+      end
+
       @impl GenServer
       def init(state) do
         {:ok, Map.new(state), {:continue, :connect}}
+      end
+
+      @impl GenServer
+      def handle_call(:state, {pid, _}, state) do
+        send(pid, {:hey, self()})
+        {:reply, {pid, state}, state}
       end
 
       @impl GenServer
