@@ -3,16 +3,5 @@ defmodule Twaiter do
   Documentation for `Twaiter`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Twaiter.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+  use Camarero, as: Camarero, methods: ~w|post get|a
 end

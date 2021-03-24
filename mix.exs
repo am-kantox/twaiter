@@ -25,6 +25,7 @@ defmodule Twaiter.MixProject do
     [
       # {:hunter, "~> 0.4"},
       {:hunter, github: "milmazz/hunter"},
+      {:camarero, "~> 0.11"},
       # dev, test
       {:mox, "~> 1.0", only: [:test]},
       {:credo, "~> 1.0", only: [:dev, :ci], runtime: false},
