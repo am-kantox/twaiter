@@ -13,7 +13,12 @@ config :camarero,
   #   extra_arguments: []
   # ],
   root: "api/v1",
-  cowboy: [port: 8080, scheme: :http, options: [port: 8080]]
+  cowboy: [
+    port: 443,
+    scheme: :https,
+    host: "pure-sands-60120.herokuapp.com",
+    options: [port: {:system, "PORT"}, force_ssl: [rewrite_on: [:x_forwarded_proto]]]
+  ]
 
 config :logger, :console,
   format: "\n$message\n$date $time [$level] $metadata\n",
