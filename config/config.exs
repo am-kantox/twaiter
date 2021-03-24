@@ -14,10 +14,13 @@ config :camarero,
   # ],
   root: "api/v1",
   cowboy: [
-    port: 443,
+    port: 8443,
     scheme: :https,
-    host: "pure-sands-60120.herokuapp.com",
-    options: [port: {:system, "PORT"}, force_ssl: [rewrite_on: [:x_forwarded_proto]]]
+    options: [
+      port: String.to_integer(System.get_env("PORT", "8443")),
+      scheme: :https,
+      force_ssl: [rewrite_on: [:x_forwarded_proto]]
+    ]
   ]
 
 config :logger, :console,
