@@ -14,12 +14,11 @@ config :camarero,
   # ],
   root: "api/v1",
   cowboy: [
-    port: 8443,
-    scheme: :https,
+    port: 8080,
+    scheme: :http,
     options: [
-      port: String.to_integer(System.get_env("PORT", "8443")),
-      scheme: :https,
-      force_ssl: [rewrite_on: [:x_forwarded_proto]]
+      port: String.to_integer(System.get_env("PORT", "8080")),
+      scheme: :http
     ]
   ]
 
