@@ -8,7 +8,7 @@ defmodule Twaiter.Tests.Mastodon do
 
   test "connects and posts statuses happily" do
     Twaiter.Mocks.ThirdParty
-    |> expect(:connect, fn %{} -> :ok end)
+    |> expect(:connect, fn %{} -> {:ok, :ok} end)
     |> expect(:call, fn message, :ok -> {:first, message} end)
 
     {:ok, _pid} = Twaiter.Mastodon.start_link()
@@ -18,7 +18,7 @@ defmodule Twaiter.Tests.Mastodon do
 
   test "connects and posts statuses happily again" do
     Twaiter.Mocks.ThirdParty
-    |> expect(:connect, fn %{} -> :ok end)
+    |> expect(:connect, fn %{} -> {:ok, :ok} end)
     |> expect(:call, fn message, :ok -> {:second, message} end)
 
     {:ok, _pid} = Twaiter.Mastodon.start_link()
@@ -28,7 +28,7 @@ defmodule Twaiter.Tests.Mastodon do
 
   test "checks the state" do
     Twaiter.Mocks.ThirdParty
-    |> expect(:connect, fn _ -> %{happy: true} end)
+    |> expect(:connect, fn _ -> {:ok, %{happy: true}} end)
 
     {:ok, pid} = Twaiter.Mastodon.start_link()
 
@@ -37,5 +37,4 @@ defmodule Twaiter.Tests.Mastodon do
 
     assert_receive {:hey, ^pid}
   end
-
 end

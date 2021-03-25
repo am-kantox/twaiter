@@ -1,14 +1,23 @@
 defmodule Twaiter.MixProject do
   use Mix.Project
 
+  @app :twaiter
+  @version "0.1.0"
+
   def project do
     [
-      app: :twaiter,
-      version: "0.1.0",
+      app: @app,
+      version: @version,
       elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      aliases: aliases(),
+      dialyzer: [
+        plt_file: {:no_warn, ".dialyzer/plts/dialyzer.plt"},
+        plt_add_apps: [:envio],
+        ignore_warnings: ".dialyzer/ignore.exs"
+      ]
     ]
   end
 
@@ -34,6 +43,16 @@ defmodule Twaiter.MixProject do
     ]
   end
 
+  defp aliases do
+    [
+      "quality.ci": [
+        "format --check-formatted",
+        "credo --strict",
+        "dialyzer --halt-exit-status"
+      ]
+    ]
+  end
+
   defp elixirc_paths(:test), do: ["test/support", "lib"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 end

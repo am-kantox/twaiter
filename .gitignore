@@ -25,4 +25,6 @@ twaiter-*.tar
 # Temporary files, for example, from tests.
 /tmp/
 
+/.dialyzer/plts/*.plt*
+
 mastodon.social.sh

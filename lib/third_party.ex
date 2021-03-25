@@ -1,6 +1,10 @@
 defmodule Twaiter.ThirdParty do
+  @moduledoc """
+    Docs
+  """
+
   @doc "Connect to the third party"
-  @callback connect(input :: map()) :: :ok | {:error, any()}
+  @callback connect(input :: map()) :: {:ok, any()} | {:error, any()}
 
   @doc "Perform request to the third party"
   @callback call(input :: map(), state :: map()) :: any()
@@ -10,13 +14,15 @@ defmodule Twaiter.ThirdParty do
     quote generated: true, location: :keep do
       use GenServer
 
+      require Logger
+
       @implementation Keyword.get(
-              unquote(opts),
-              :impl,
-              Application.get_env(:twaiter, :impls, [
-                {__MODULE__, Module.concat(__MODULE__, Impl)}
-              ])[__MODULE__]
-            )
+                        unquote(opts),
+                        :impl,
+                        Application.get_env(:twaiter, :impls, [
+                          {__MODULE__, Module.concat(__MODULE__, Impl)}
+                        ])[__MODULE__]
+                      )
 
       def start_link(opts \\ unquote(opts)) do
         GenServer.start_link(__MODULE__, opts, name: __MODULE__)
@@ -26,7 +32,7 @@ defmodule Twaiter.ThirdParty do
         GenServer.call(__MODULE__, {:post, input})
       end
 
-      def state() do
+      def state do
         GenServer.call(__MODULE__, :state)
       end
 
@@ -42,8 +48,18 @@ defmodule Twaiter.ThirdParty do
       end
 
       @impl GenServer
-      def handle_continue(:connect, state),
-        do: {:noreply, connect(state)}
+      def handle_continue(:connect, state) do
+        state
+        |> connect()
+        |> case do
+          {:ok, state} ->
+            {:noreply, state}
+
+          {:error, error} ->
+            Logger.warn("Unable to connect. Reason: #{inspect(error)}")
+            {:noreply, {:continue, :connect}}
+        end
+      end
 
       @impl GenServer
       def handle_call({:post, input}, _from, state) do
