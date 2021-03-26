@@ -28,6 +28,10 @@ defmodule Twaiter.ThirdParty do
         GenServer.start_link(__MODULE__, opts, name: __MODULE__)
       end
 
+      def login(credentials) do
+        GenServer.cast(__MODULE__, {:connect, credentials})
+      end
+
       def post(input) do
         GenServer.call(__MODULE__, {:post, input})
       end
@@ -48,8 +52,8 @@ defmodule Twaiter.ThirdParty do
       end
 
       @impl GenServer
-      def handle_continue(:connect, state) do
-        state
+      def handle_cast({:connect, credentials}, state) do
+        credentials
         |> connect()
         |> case do
           {:ok, state} ->
@@ -57,8 +61,14 @@ defmodule Twaiter.ThirdParty do
 
           {:error, error} ->
             Logger.warn("Unable to connect. Reason: #{inspect(error)}")
-            {:noreply, {:continue, :connect}}
+            # {:noreply, state, {:continue, :connect}}
+            {:noreply, state}
         end
+      end
+
+      @impl GenServer
+      def handle_continue(:connect, state) do
+        handle_cast({:connect, state}, state)
       end
 
       @impl GenServer
