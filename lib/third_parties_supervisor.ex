@@ -1,4 +1,6 @@
 defmodule Twaiter.ThirdPartiesSupervisor do
+  @moduledoc false
+
   use Supervisor
 
   def start_link(opts \\ []) do
@@ -8,10 +10,8 @@ defmodule Twaiter.ThirdPartiesSupervisor do
   @impl true
   def init(_) do
     children = [
-      {DynamicSupervisor,
-        strategy: :one_for_one, name: Twaiter.DynamicSupervisor},
-      {Registry,
-        keys: :unique, name: Twaiter.Registry}
+      {DynamicSupervisor, strategy: :one_for_one, name: Twaiter.DynamicSupervisor},
+      {Registry, keys: :unique, name: Twaiter.Registry}
     ]
 
     Supervisor.init(children, strategy: :rest_for_one)

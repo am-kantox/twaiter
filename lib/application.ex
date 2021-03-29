@@ -9,6 +9,7 @@ defmodule Twaiter.Application do
     children = [
       Twaiter.ThirdPartiesSupervisor
     ]
+
     opts = [strategy: :one_for_one, name: Twaiter.Supervisor]
 
     Supervisor.start_link(children, opts)
